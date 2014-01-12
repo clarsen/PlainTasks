@@ -46,6 +46,8 @@ Couple of tags are in completion rules:
   ☐ type s, press tab key twice — it'll become @started(13-10-25 15:20)
     you'll get a current date;
     when a task with such tag is completed/cancelled, you'll know how many time has passed since start.
+  ☐ type c, press tab key twice — it'll become @created(13-10-25 15:20)
+    you'll get a current date;  This can be used to sort by age for future functionality.
   ☐ type t, press tab key — it'll become @today
     easy to spot, eh?
 

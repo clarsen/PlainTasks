@@ -2,6 +2,7 @@
     "scope": "text.todo",
     "completions": [
         { "trigger": "s", "contents": "@started" },
+        { "trigger": "c", "contents": "@created" },
         { "trigger": "t", "contents": "@today" }
     ]
 }
