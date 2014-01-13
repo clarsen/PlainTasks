@@ -102,10 +102,12 @@ class PlainTasksCompleteCommand(PlainTasksBase):
                 rdm = '^(\s*)' + re.escape(self.done_tasks_bullet) + '(\s*[^\b]*?\s*)(?=\s@done|@project|\s\(|$).*$'
                 rcm = '^(\s*)' + re.escape(self.canc_tasks_bullet) + '(\s*[^\b]*?\s*)(?=\s@cancelled|@project|\s\(|$).*$'
             started = '^\s*[^\b]*?\s*@started(\([\d\w,\.:\-\/ @]*\)).*$'
+            created = '^\s*[^\b]*?\s*@created(\([\d\w,\.:\-\/ @]*\)).*$'
             open_matches = re.match(rom, line_contents, re.U)
             done_matches = re.match(rdm, line_contents, re.U)
             canc_matches = re.match(rcm, line_contents, re.U)
             started_matches = re.match(started, line_contents, re.U)
+            created_matches = re.match(created, line_contents, re.U)
             if open_matches and not (done_matches or canc_matches):
                 grps = open_matches.groups()
                 eol = self.view.insert(edit, line.end(), done_line_end)
@@ -115,6 +117,10 @@ class PlainTasksCompleteCommand(PlainTasksBase):
                     start = datetime.strptime(started_matches.group(1), self.date_format)
                     end = datetime.strptime(done_line_end.replace(' @done ', ''), self.date_format)
                     self.view.insert(edit, line.end() + eol, ' @lasted(%s)' % str(end - start))
+                if created_matches:
+                    start = datetime.strptime(created_matches.group(1), self.date_format)
+                    end = datetime.strptime(done_line_end.replace(' @done ', ''), self.date_format)
+                    self.view.insert(edit, line.end() + eol, ' @opened(%s)' % str(end - start))
             elif done_matches:
                 grps = done_matches.groups()
                 replacement = u'%s%s%s' % (grps[0], self.open_tasks_bullet, grps[1].rstrip())
@@ -153,10 +159,12 @@ class PlainTasksCancelCommand(PlainTasksBase):
                 rdm = '^(\s*)' + re.escape(self.done_tasks_bullet) + '(\s*[^\b]*?\s*)(?=\s@done|@project|\s\(|$).*$'
                 rcm = '^(\s*)' + re.escape(self.canc_tasks_bullet) + '(\s*[^\b]*?\s*)(?=\s@cancelled|@project|\s\(|$).*$'
             started = '^\s*[^\b]*?\s*@started(\([\d\w,\.:\-\/ @]*\)).*$'
+            created = '^\s*[^\b]*?\s*@created(\([\d\w,\.:\-\/ @]*\)).*$'
             open_matches = re.match(rom, line_contents, re.U)
             done_matches = re.match(rdm, line_contents, re.U)
             canc_matches = re.match(rcm, line_contents, re.U)
             started_matches = re.match(started, line_contents, re.U)
+            created_matches = re.match(created, line_contents, re.U)
             if open_matches and not (done_matches or canc_matches):
                 grps = open_matches.groups()
                 eol = self.view.insert(edit, line.end(), canc_line_end)
@@ -166,6 +174,10 @@ class PlainTasksCancelCommand(PlainTasksBase):
                     start = datetime.strptime(started_matches.group(1), self.date_format)
                     end = datetime.strptime(canc_line_end.replace(' @cancelled ', ''), self.date_format)
                     self.view.insert(edit, line.end() + eol, ' @wasted(%s)' % str(end - start))
+                if created_matches:
+                    start = datetime.strptime(created_matches.group(1), self.date_format)
+                    end = datetime.strptime(canc_line_end.replace(' @cancelled ', ''), self.date_format)
+                    self.view.insert(edit, line.end() + eol, ' @opened(%s)' % str(end - start))
             elif done_matches:
                 pass
                 # grps = done_matches.groups()
