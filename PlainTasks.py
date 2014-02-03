@@ -317,7 +317,7 @@ class PlainTasksNewTaskDocCommand(sublime_plugin.WindowCommand):
 
 class PlainTasksOpenUrlCommand(sublime_plugin.TextCommand):
     #It is horrible regex but it works perfectly
-    URL_REGEX = r"""(?i)\b((?:(https?|file)://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))
+    URL_REGEX = r"""(?i)\b((?:(https?|file|x-devonthink-item)://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))
         +(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))"""
 
     def run(self, edit):
